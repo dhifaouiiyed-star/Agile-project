@@ -1,4 +1,4 @@
-FROM python:3.9-slim-buster as builder
+FROM python:3.11-slim-bookworm as builder
 
 WORKDIR /app
 
@@ -13,7 +13,7 @@ COPY requirements.txt .
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt
 
 # Stage 2: Final image
-FROM python:3.9-slim-buster
+FROM python:3.11-slim-bookworm
 
 WORKDIR /app
 
