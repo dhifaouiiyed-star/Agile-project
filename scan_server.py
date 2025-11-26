@@ -320,7 +320,7 @@ class ScanManager:
         r=requests.post(f"{SQLMAP_API_URL}/scan/{task_id}/start", json=data)
         r.raise_for_status()
     @staticmethod
-     def _get_sqlmap_status(task_id: str) -> str:
+    def _get_sqlmap_status(task_id: str) -> str:
         r = requests.get(f"{SQLMAP_API_URL}/scan/{task_id}/status")
         r.raise_for_status()
         return r.json().get("status")  # "running" or "terminated"
