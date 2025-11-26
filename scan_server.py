@@ -310,15 +310,15 @@ class ScanManager:
         task_id=r.json()["taskid"]
         return task_id
     @staticmethod
-    def start_sqlmap_scan(task_id:str, target:str):
-        # start scan with basic options
+    def _start_sqlmap_scan(task_id: str, target: str, level: int = 1, risk: int = 1):
         data = {
             "url": target,
-            "risk": 2,
-            "level": 2
+            "level": level,
+            "risk": risk
         }
-        r=requests.post(f"{SQLMAP_API_URL}/scan/{task_id}/start", json=data)
+        r = requests.post(f"{SQLMAP_API_URL}/scan/{task_id}/start", json=data)
         r.raise_for_status()
+
     @staticmethod
     def _get_sqlmap_status(task_id: str) -> str:
         r = requests.get(f"{SQLMAP_API_URL}/scan/{task_id}/status")
@@ -334,7 +334,7 @@ class ScanManager:
     def perform_sqlmap_scan(scan_id: str, target: str, scan_type: str):
         try:
             task_id = ScanManager._sqlmap_task(target)
-            ScanManager.start_sqlmap_scan(task_id, target)
+            ScanManager._start_sqlmap_scan(task_id, target)
 
             # poll until sqlmap finishes
             while True:
